@@ -2,8 +2,8 @@
 
 Keep this short. Bullet points, a small table and one diagram or code trace are enough. This is your checkpoint record, not an extra report. Replace the prompts as you work.
 
-Name:
-Exact Unity version:
+Name: Asilbek Khalikov
+Exact Unity version: 6000.3.26f1
 Checkpoint commit / repository:
 Current stage and anything unfinished:
 
@@ -14,7 +14,6 @@ Three observations the rival needs, including one it might not have:
 Seeing a pickup across a gap proves / does not prove reachability because:
 
 One question about NPC behaviour:
-
 ## One complete trace
 
 Use one actual situation. Include the observation data, derived facts, selected task and reason, movement request/result, and how feedback affects a later decision. Identify the responsible code locations. A tiny state diagram can accompany this trace.
