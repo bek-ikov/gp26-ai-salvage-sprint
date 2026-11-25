@@ -79,9 +79,9 @@ Predict the task for each row, then point to the responsible branch:
 
 | NeedsDelivery | HasUsableTarget | SelectedTargetId | Your predicted task |
 |---|---|---|---|
-| true | false | -1 | ? |
-| false | true | 7 | ? |
-| false | false | -1 | ? |
+| true | false | -1 | The agent returns to depot to drop off cargo | 
+| false | true | 7 | The agent has found a target and is going to collect it |
+| false | false | -1 | The agent explores until it finds a target |
 
 **Check together:** Deliver, Collect target 7, Explore. Choosing a task does not move the character or award cargo. The returned `Decision` contains a task, target ID and explanation.
 
