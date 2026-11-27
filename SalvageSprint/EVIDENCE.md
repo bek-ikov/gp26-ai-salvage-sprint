@@ -5,7 +5,7 @@ Keep this short. Bullet points, a small table and one diagram or code trace are 
 Name: Asilbek Khalikov
 Exact Unity version: 6000.3.26f1
 Checkpoint commit / repository: https://github.com/bek-ikov/gp26-ai-salvage-sprint
-Current stage and anything unfinished: Beginning of Stage 4
+Current stage and anything unfinished: Completed Stage 4. Not begun Stage 5. The supplied tests pass, but I do not have time to record them and polish this document.
 
 ## Initial prediction
 
@@ -59,12 +59,12 @@ Use one actual situation. Include the observation data, derived facts, selected 
 |---|---|---|
 | Normal loop and restart | The AI looks for the nearest scrap piece and goes to pick it up. After the scrap piece is obtained, it delivers it to the depot. | The AI does as predicted, and wins after picking up and delivering 5 pieces. |
 | Carrying cargo | The AI delivers the carried cargo and returns to the usual observe → collect → deliver loop. | The AI does as predicted. |
-| Hidden / remembered pickup | The AI disregards the hidden scrap piece and searches for another one. | The AI detects the hidden scrap piece repeatedly, despite not having a direct line-of-sight route to it. This leads to the AI being stuck in place. Picking up the hidden scrap piece as a player frees the AI from the detect → fail loop.  |
+| Hidden / remembered pickup | The AI disregards the hidden scrap piece and searches for another one. | The AI does as predicted. |
 | Target taken | The AI looks for another target and routes to it. | The AI briefly enters the Explore state, before finding a new target and routing to it. |
-| Unreachable target | The AI disregards the unreachable scrap piece and searches for another one. | Much like the issue in the hidden cargo test, the AI is stuck in place due to the detect → fail loop. Due to the fact that the player can't reach the scrap piece either, the AI is stuck that way. |
+| Unreachable target | The AI disregards the unreachable scrap piece and searches for another one. | The AI does as predicted. |
 | No usable pickup | The AI explores until it finds a pickup | The AI explores until it completes one whole loop. Since the AI deems that there are no pickups on the map, the game ends in a draw once it comes back to the depot. |
 
-Supplied test result, with any added tests identified: 14 pass, 3 fail
+Supplied test result, with any added tests identified: 17 pass, 0 fail
 Live walkthrough checked by / recording link if used:
 
 ## One correction and one independent check
