@@ -5,7 +5,7 @@ Keep this short. Bullet points, a small table and one diagram or code trace are 
 Name: Asilbek Khalikov
 Exact Unity version: 6000.3.26f1
 Checkpoint commit / repository: https://github.com/bek-ikov/gp26-ai-salvage-sprint
-Current stage and anything unfinished: Beginning of Stage 2
+Current stage and anything unfinished: Beginning of Stage 4
 
 ## Initial prediction
 
@@ -43,8 +43,13 @@ DecisionPolicy.Choose() then selects:
 3. Movement
 RivalBrain.Update() requests movement towards pickup 3 through Navigator.Request(). The NavMeshAgent fails to find a complete route. Navigator.Poll() uses NavigationFeedback.Classify() to identify the failed route and returns TravelStatus.Failed.
 
-4. Evaluation after feedback (failure)
-RivalBrain.Update() records the failed target in failedUntil, causing it to be marked as blocked for six seconds. The next observation is captured with this information. If DecisionPolicy.Infer() excludes blocked candidates, pickup 7 becomes the target. Since the starter implementation does not yet exclude blocked candidates, the AI ends up stuck in a loop.
+4. Evaluation after feedback
+RivalBrain.Update() records the failed target in failedUntil, causing it to be marked as blocked for six seconds. The next observation is captured with this information. If DecisionPolicy.Infer() excludes blocked candidates, pickup 7 becomes the target.
+
+Explore → Collect when an eligible pickup is selected.
+Collect → Deliver after successful collection gives cargo.
+Deliver → Collect or Explore after delivery, depending on available knowledge.
+Collect → another Collect target or Explore when the current target becomes unusable
 
 Use one actual situation. Include the observation data, derived facts, selected task and reason, movement request/result, and how feedback affects a later decision. Identify the responsible code locations. A tiny state diagram can accompany this trace.
 
@@ -59,17 +64,21 @@ Use one actual situation. Include the observation data, derived facts, selected 
 | Unreachable target | The AI disregards the unreachable scrap piece and searches for another one. | Much like the issue in the hidden cargo test, the AI is stuck in place due to the detect → fail loop. Due to the fact that the player can't reach the scrap piece either, the AI is stuck that way. |
 | No usable pickup | The AI explores until it finds a pickup | The AI explores until it completes one whole loop. Since the AI deems that there are no pickups on the map, the game ends in a draw once it comes back to the depot. |
 
-Supplied test result, with any added tests identified: 11 pass, 6 fail
+Supplied test result, with any added tests identified: 14 pass, 3 fail
 Live walkthrough checked by / recording link if used:
 
 ## One correction and one independent check
 
-The original weakness and why it happened:
-What I changed and why it addresses the cause:
-My counterexample or experiment: prediction, observed result, and one limitation:
+The original weakness and why it happened: The AI would get hung up if the nearest pickup was blocked. This is due to the fact that Infer() did not consider if the target was visible, remembered or blocked.
+What I changed and why it addresses the cause: I added a visibility and memory check in Infer(), meaning that the AI will only consider remembered or directly visible targets.
+My counterexample or experiment: F4 Hidden pickup scene
+Prediction, observed result, and one limitation:
+- Prediction: The AI will not go for the nearer, but obstructed, pickup.
+- Observed result: The AI ignores the blocked pickup and travels to the unobstructed one. Upon delivery, the AI enters explore mode until it gets line of sight of the obstructed pickup. The AI then travels to the pickup and gets stuck, since the depot is now obstructed.
+- Limitation: The AI can get stuck if it enters an area where vision of the depot is blocked.
 
 ## Collaboration and help
 
 People I discussed or playtested with: Max, Avdel, Alex
-Code, sources or substantive tools/AI assistance I used, and how I verified them:
+Code, sources or substantive tools/AI assistance I used, and how I verified them: Used the teacher repo to get an idea of what the correct implementation looks like.
 If unfinished: what works, exact reproduction steps, and the help I need:
